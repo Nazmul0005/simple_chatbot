@@ -1,6 +1,5 @@
 from pydantic import BaseModel, field_validator
-from typing import List, Dict, Optional
-from datetime import datetime
+from typing import List, Optional
 from com.mhire.app.logger.logger import ChatEndpoint
 
 logger = ChatEndpoint.setup_schema_logger()
@@ -19,38 +18,27 @@ class MessageHistory(BaseModel):
         return v
 
 class AIChatRequest(BaseModel):
-    user_id: str
-    session_id: str
     query: str
     history: Optional[List[MessageHistory]] = []
     
-    @field_validator('user_id', 'session_id', 'query')
+    @field_validator('query')
     @classmethod
     def validate_not_empty(cls, v):
         try:
             if not v or not v.strip():
-                error_msg = "user_id, session_id, and query cannot be empty"
+                error_msg = "query cannot be empty"
                 logger.error(error_msg)
                 raise ValueError(error_msg)
-            logger.debug(f"Validated field: {v[:50]}...")
+            logger.debug(f"Validated query: {v[:50]}...")
             return v
         except Exception as e:
             error_msg = f"Validation error: {str(e)}"
             logger.error(error_msg, exc_info=True)
             raise
-    
-    @field_validator('history')
-    @classmethod
-    def validate_history_length(cls, v):
-        if len(v) > 10:
-            logger.warning(f"History has {len(v)} messages, truncating to last 10")
-            return v[-10:]
-        return v
 
 class AIChatResponse(BaseModel):
     query: str
     response: str
-    timestamp: datetime
     
     def __init__(self, **data):
         try:

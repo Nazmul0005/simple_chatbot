@@ -1,6 +1,4 @@
-from datetime import datetime
 from typing import List
-import logging
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -42,8 +40,7 @@ def convert_to_langchain_messages(messages: List[MessageHistory]):
 async def process_ai_chat(request: AIChatRequest) -> AIChatResponse:
     """Process AI chat request with conversation history (no DB operations)"""
     try:
-        logger.info(f"Processing AI chat request for user_id: {request.user_id}, session_id: {request.session_id}")
-        timestamp = datetime.utcnow()
+        logger.info(f"Processing AI chat request")
         
         # Convert history to LangChain format
         logger.debug(f"Converting {len(request.history)} history messages")
@@ -69,13 +66,12 @@ async def process_ai_chat(request: AIChatRequest) -> AIChatResponse:
         ai_response = response.content
         logger.debug("Received response from Gemini model")
         
-        logger.info(f"AI chat request processed successfully for user_id: {request.user_id}")
+        logger.info(f"AI chat request processed successfully")
         return AIChatResponse(
             query=request.query,
-            response=ai_response,
-            timestamp=timestamp
+            response=ai_response
         )
     except Exception as e:
-        error_msg = f"Failed to process AI chat request for user_id: {request.user_id}: {str(e)}"
+        error_msg = f"Failed to process AI chat request: {str(e)}"
         logger.error(error_msg, exc_info=True)
         raise Exception(error_msg) from e

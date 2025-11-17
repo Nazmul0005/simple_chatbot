@@ -13,31 +13,27 @@ async def ai_chat_endpoint(request: AIChatRequest):
     AI Chat endpoint that processes user query with provided conversation history
     
     Parameters:
-    - user_id: Unique identifier for the user
-    - session_id: Unique identifier for the conversation session
-    - query: User's current question/message
-    - history: Last 10 messages from conversation (optional, max 10 messages)
+    - query: User's current question/message (required)
+    - history: Conversation history as a list of messages (optional)
     
     Returns:
     - query: The user's query
     - response: AI generated response
-    - timestamp: When the response was generated
     
     Note: This endpoint does NOT perform any database operations.
-    History must be provided in the request.
     """
     try:
-        logger.info(f"AI chat endpoint called for user_id: {request.user_id}, session_id: {request.session_id}")
+        logger.info(f"AI chat endpoint called")
         logger.debug(f"Query: {request.query}")
         logger.debug(f"History length: {len(request.history)}")
         
         result = await process_ai_chat(request)
         
-        logger.info(f"AI chat endpoint completed successfully for user_id: {request.user_id}")
+        logger.info(f"AI chat endpoint completed successfully")
         return result
     except Exception as e:
         error_str = str(e)
-        logger.error(f"Error processing AI chat for user_id: {request.user_id}: {error_str}", exc_info=True)
+        logger.error(f"Error processing AI chat: {error_str}", exc_info=True)
         
         # Custom error messages for specific errors
         if "API_KEY_INVALID" in error_str or "API key not valid" in error_str:
