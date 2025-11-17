@@ -7,7 +7,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: habit_app
+    container_name: habitapp
     expose:
       - '8000'
     env_file:
@@ -17,9 +17,9 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: nginx_proxy101
+    container_name: nginx_proxy10
     ports:
-      - '0.0.0.0:3042:80'
+      - '0.0.0.0:3043:80'
     networks:
       - app-network
     volumes:
