@@ -82,6 +82,20 @@ class ChatEndpoint:
         return LoggerFactory.setup_logger("ChatRouter", "chat", "chat")
 
 
+class SessionTitleEndpoint:
+    @staticmethod
+    def setup_session_title_logger():
+        return LoggerFactory.setup_logger("SessionTitleService", "session_title", "session_title")
+    
+    @staticmethod
+    def setup_session_title_schema_logger():
+        return LoggerFactory.setup_logger("SessionTitleSchema", "session_title", "session_title")
+    
+    @staticmethod
+    def setup_session_title_router_logger():
+        return LoggerFactory.setup_logger("SessionTitleRouter", "session_title", "session_title")
+
+
 # class ChatStreamEndpoint:
 #     @staticmethod
 #     def setup_chat_stream_logger():

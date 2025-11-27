@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 # from com.mhire.app.services.chat_stream.chat_stream_router import router as chat_stream_router
 # from com.mhire.app.services.chat.chat_router import router as chat_router
 from com.mhire.app.services.ai_chat.ai_chat_router import router as ai_chat_router  # NEW
+from com.mhire.app.services.session_title.session_title_router import router as session_title_router
 # from com.mhire.app.services.conversation.conversation_router import router as conversation_router
 # from com.mhire.app.services.session_rename.session_rename_router import router as session_rename_router
 # from com.mhire.app.services.history_get.history_get_router import router as history_get_router
@@ -29,6 +30,7 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 # Include routers
 # app.include_router(chat_router)
 app.include_router(ai_chat_router)  # NEW - No DB operations
+app.include_router(session_title_router)
 # app.include_router(conversation_router)
 # app.include_router(session_rename_router)
 # app.include_router(history_delete_router)
