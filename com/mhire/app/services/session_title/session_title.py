@@ -15,20 +15,19 @@ class SessionTitleService:
         
         # Create prompt template
         self.prompt = ChatPromptTemplate.from_messages([
-            ("system", """You are an expert at creating concise, descriptive session titles.
-Analyze the conversation and generate EXACTLY 3 words that capture the main topic.
-
-Rules:
-- EXACTLY 3 words only
-- Use title case (capitalize each word)
-- Be specific and descriptive
-- No punctuation or special characters
-- Focus on the core topic/theme
-
-Respond with ONLY the 3-word title, nothing else."""),
+            ("system", """You are an expert at creating concise, descriptive session titles for health and habit-related conversations.
+        Analyze the conversation and generate EXACTLY 3 words that capture the main health topic or habit discussed.
+        Rules:
+        - EXACTLY 3 words only
+        - Use title case (capitalize each word)
+        - Be specific and descriptive about the health/habit topic
+        - No punctuation or special characters
+        - Focus on the primary health concern or habit being addressed
+        - Prefer actionable or condition-specific terms (e.g., "Quit Smoking Plan", "Sleep Schedule Fix", "Reduce Sugar Intake")
+        Respond with ONLY the 3-word title, nothing else."""),
             ("human", "Conversation:\n{conversation}\n\nGenerate a 3-word title:")
         ])
-    
+            
     def generate_session_title(self, history: List[Dict[str, str]]) -> str:
         """
         Generate a 3-word session title based on chat history using LangChain
