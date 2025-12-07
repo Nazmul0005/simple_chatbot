@@ -1,7 +1,10 @@
-FROM python:3.12-slim
+FROM python:3.12-slim AS builder
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
+ENV APP_HOME=/app
+
+WORKDIR $APP_HOME
 
 # Install required packages and dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -14,14 +17,36 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     net-tools \
     && rm -rf /var/lib/apt/lists/*
 
+
+# Copy requirements and install in /install
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Copy source code
+COPY . .
+
+# =========================
+# Final stage
+# =========================
+FROM python:3.12-slim
+
+ENV PYTHONUNBUFFERED=1
+ENV APP_HOME=/app
+
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR $APP_HOME
 
-# Copy the requirements file into the container
-COPY requirements.txt /app/
+# Install runtime dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy installed packages from builder
+COPY --from=builder /install /usr/local
+
+# Copy source code
+COPY --from=builder $APP_HOME $APP_HOME
 
 # Copy the app code into the container
 COPY . /app/
