@@ -8,3 +8,7 @@ python-dotenv
 langchain-core
 #streamlit
 requests
+langchain-community
+faiss-cpu
+numpy
+google-genai

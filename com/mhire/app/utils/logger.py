@@ -1,7 +1,3 @@
-"""
-Enhanced logging configuration with different log levels for components
-"""
-
 import logging
 import sys
 from typing import Optional
