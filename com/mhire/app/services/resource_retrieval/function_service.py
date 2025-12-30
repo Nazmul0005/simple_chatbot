@@ -125,6 +125,7 @@ class FunctionService:
                 section="2.1",
                 title="Naloxone (Narcan)",
                 source_url="https://www.samhsa.gov/medication-assisted-treatment/medications-counseling-related-conditions/opioid-overdose"
+                
             ),
             Resource(
                 content="Fentanyl test strips can detect the presence of fentanyl in substances before use, helping prevent accidental fentanyl exposure.",

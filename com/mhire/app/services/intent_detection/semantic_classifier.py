@@ -1,6 +1,7 @@
 """Semantic intent classification for non-emergency messages"""
 
 from typing import Optional
+import math
 from com.mhire.app.models.intent_models import IntentCategory, PriorityLevel, IntentResult
 
 # Intent patterns for semantic matching
@@ -52,7 +53,9 @@ def classify_intent(message: str) -> IntentResult:
         
         # Calculate confidence score
         if matched_keywords:
-            score = len(matched_keywords) / len(keywords)
+            # Use sqrt normalization to handle large keyword lists better
+            score = len(matched_keywords) / math.sqrt(len(keywords))
+            score = min(1.0, score)  # Cap at 1.0
             
             if score > best_score and score >= pattern_config['confidence_threshold']:
                 best_score = score
