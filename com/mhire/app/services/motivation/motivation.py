@@ -18,7 +18,7 @@ class MotivationService:
         
         # Initialize Gemini model
         self.llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash-lite",
             google_api_key=config.GEMINI_API_KEY,
             temperature=0.9,  # Higher temperature for more creative responses
         )
@@ -29,7 +29,7 @@ class MotivationService:
 Your job is to generate short, powerful motivational quotes to help people build good habits and break bad ones.
 
 Rules:
-- Generate ONLY 1-2 sentences with a maximum of 110 characters
+- Generate ONLY 2 sentences with a maximum of 120 characters
 - Focus on wellness, personal growth, and positive change
 - Be encouraging and actionable
 - Vary your messages to keep them fresh
@@ -49,11 +49,12 @@ Rules:
         try:
             motivation = await self.chain.ainvoke({})
             # Clean up the response (remove any quotes if present)
-            motivation = motivation.strip().strip('"').strip("'")
             return motivation
         except Exception as e:
             # Fallback motivation in case of error
             return "Every small step forward is progress. Keep building your better self today."
 
 # Create singleton instance
+
 motivation_service = MotivationService()
+
